@@ -1,31 +1,30 @@
-
 module Anthracinus
   # Defines HTTP request methods
   module Request
     require 'date'
     # Perform an HTTP GET request
-    def get(path, params={}, options={})
+    def get(path, params = {}, options = {})
       request(:get, path, params, options)
     end
 
-    def post(path, params={}, options={})
+    def post(path, params = {}, options = {})
       request(:post, path, params, options)
     end
 
     # Perform an HTTP PUT request
-    def put(path, params={}, options={})
+    def put(path, params = {}, options = {})
       request(:put, path, params, options)
     end
 
     # Perform an HTTP DELETE request
-    def delete(path, params={}, options={})
+    def delete(path, params = {}, options = {})
       request(:delete, path, params, options)
     end
 
     private
 
     def self.success?(response)
-      response&.dig('response','status') == 1000
+      response&.dig('response', 'status') == 1000
     end
 
     def datafy(params)
@@ -42,27 +41,28 @@ module Anthracinus
       m_id = params.delete(:merchant_id) || merchant_id
       raise Anthracinus::Client::RequestParameterError.new("merchant_id must be supplied as a parameter") unless m_id
       headers = {
-          'merchantId':         m_id,
-          'requestId':          params.delete(:request_id) || generated_request_id,
+          'merchantId': m_id,
+          'requestId': params.delete(:request_id) || generated_request_id,
           'millisecondsToWait': (options.delete(:msec_wait) || default_wait).to_s,
-          'SYNCHRONOUS_ONLY':   (options.delete(:synchronous) || default_synchronous).to_s   # whether we wait around for the function call
+          'SYNCHRONOUS_ONLY': (options.delete(:synchronous) || default_synchronous).to_s # whether we wait around for the function call
       }
 
-      response = connection(options.merge({headers:headers})).send(method) do |request|
+      response = connection(options.merge({headers: headers})).send(method) do |request|
 
-        
+
         case method.to_sym
-          when :get, :delete
-            request.url(path, params)
+        when :get, :delete
+          request.url(path, params)
 
-          when :post, :put
-            request.path = path
-            request.body = params unless params.empty?
+        when :post, :put
+          request.path = path
+          request.body = params unless params.empty?
         end
       end
-
       if options[:raw]
         response
+      elsif options[:headers]
+        [response.body, response.headers]
       else
         response.body
       end
