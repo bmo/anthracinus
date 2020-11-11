@@ -9,7 +9,6 @@ module Anthracinus
     #
     # @return [Anthracinus::Client]
     def new(options={})
-      puts Anthracinus::VERSION
       Anthracinus::Client.new(options)
     end
 

@@ -5,9 +5,10 @@ module Anthracinus
       CATALOG_SUBORG_API_URL = 'rewardsCatalogProcessing/v1/clientProgramsBySubOrg'
 
       ORDER_REALTIME_BULK_URL = 'rewardsOrderProcessing/v1/submitRealTimeEgiftBulk'
-      ORDER_REALTIME_VIRTUAL_URL = 'rewardsOrderProcessing/v1/submitRealTimeVirtualIndividual'
+      ORDER_REALTIME_VIRTUAL_URL = 'rewardsOrderProcessing/v1/submitRealTimeVirtualBulk'
       ORDER_INFO_URL = 'rewardsOrderProcessing/v1/orderInfo/byKeys'
-
+      ORDER_BULK_URL = 'rewardsOrderProcessing/v1/submitEgiftBulk'
+      ORDER_BULK_VIRTUAL_URL = 'rewardsOrderProcessing/v1/submitVirtualBulk'
     end
   end
 end

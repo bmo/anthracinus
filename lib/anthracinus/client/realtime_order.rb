@@ -6,7 +6,7 @@ module Anthracinus
 
     module RealtimeOrder
       # purchase_order_number up to 50 chars
-      def order_submit_realtime(client_pgm_number, client_ref_id, amount, content_provider_id, purch_order_number, return_card_and_pin = true, payment_type = :draw_down)
+      def order_submit_realtime(client_pgm_number, client_ref_id, amount, content_provider_id, purch_order_number, return_card_and_pin = true, payment_type = :draw_down, options)
 
         c_r_id = client_ref_id.to_s
         pmt_type = payment_type.to_s.upcase
@@ -28,18 +28,21 @@ module Anthracinus
             'quantity': '1', # must be one for this API
             'contentProvider': content_provider_id # from the catalog
         }
-
-        post(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_BULK_URL, {
-            'clientProgramNumber': client_pgm_number.to_s,
-            'paymentType': pmt_type,
-            'poNumber': purch_order_number.to_s,
-            'returnCardNumberAndPIN': return_card_and_pin.to_s,
-            'orderDetails': [order_detail]
-        })
+        params =  {
+                    'clientProgramNumber': client_pgm_number.to_s,
+                    'paymentType': pmt_type,
+                    'poNumber': purch_order_number.to_s,
+                    'returnCardNumberAndPIN': return_card_and_pin.to_s,
+                    'orderDetails': [order_detail]
+                }
+        puts("Params #{params.inspect}")
+        post(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_BULK_URL, params, options)
       end
 
-      def order_submit_realtime_virtual(client_pgm_number, client_ref_id, amount, return_card_and_pin = true, payment_type = :draw_down)
+      def order_submit_realtime_virtual(client_pgm_number, client_ref_id, amount, purch_order_number, return_card_and_pin = true, payment_type = :draw_down, options={})
         c_r_id = client_ref_id.to_s
+        pmt_type = payment_type.to_s.upcase
+        
         unless validate_client_ref(c_r_id)
           raise InvalidParameterError.new('Client Reference ID contains invalid characters')
         end
@@ -48,17 +51,33 @@ module Anthracinus
           raise InvalidParameterError.new('Payment type must be one of DRAW_DOWN or ACH_DEBIT')
         end
 
+        if purch_order_number && purch_order_number.size > 50
+          raise InvalidParameterError.new('Purchase order string must be < 50 characters')
+        end
+
         order_detail = {
                     'clientRefId': c_r_id, # something unique
                     'amount': amount.to_s,
-                    'quantity': '1', # must be one for this API
+                    'quantity': '1' # must be one for this API
+
                 }
-        post(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_VIRTUAL_URL, {
-                    'clientProgramNumber': client_pgm_number.to_s,
-                    'paymentType': pmt_type,
-                    'poNumber': purch_order_number.to_s,
-                    'orderDetails': [order_detail]
-                })
+        params = {
+                            'clientProgramNumber': client_pgm_number.to_s,
+                            'paymentType': pmt_type,
+                            'poNumber': purch_order_number.to_s,
+                            'orderDetails': [order_detail]
+
+                        }
+        puts params.inspect
+        post(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_VIRTUAL_URL, params, options)
+      end
+
+      def get_realtime(transaction_id, options={})
+        get(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_BULK_URL+"/#{transaction_id}", options)
+      end
+
+      def get_realtime_virtual(transaction_id, options={})
+        get(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_VIRTUAL_URL + "/#{transaction_id}", options)
       end
 
       # retrieve the order with variable params

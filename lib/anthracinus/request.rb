@@ -56,7 +56,7 @@ module Anthracinus
 
         when :post, :put
           request.path = path
-          request.body = params unless params.empty?
+          request.body = params.to_json  unless params.empty?
         end
       end
       if options[:raw]
@@ -69,8 +69,10 @@ module Anthracinus
     end
 
     def generated_request_id
-      # this is a "A globally unique string identifier specified by your client application, to be used during reconciliation and to facilitate idempotency. Use the same RequestId to retry the same request, for instance, in the case of a timeout."
-      DateTime.now.strftime('TruCentive %FT%T.%6N')
+      # This is a "A globally unique string identifier specified by your client application, to be used during reconciliation and to facilitate idempotency.
+      # Use the same RequestId to retry the same request, for instance, in the case of a timeout."
+      # Practical Note: do not put any character in this that requires escaping when used in a URL / URL Parameter
+      DateTime.now.strftime('Anthracinus_%FT%T_%6N').gsub(/:/,'_')
     end
 
   end

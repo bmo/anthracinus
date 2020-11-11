@@ -10,9 +10,11 @@ module Anthracinus
     require 'anthracinus/client/cache'
     require 'anthracinus/client/catalog'
     require 'anthracinus/client/realtime_order'
+    require 'anthracinus/client/order'
     include Anthracinus::Client::Cache
     include Anthracinus::Client::Catalog
     include Anthracinus::Client::RealtimeOrder
+    include Anthracinus::Client::Order
     
   end
 end
