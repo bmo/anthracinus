@@ -12,7 +12,16 @@ module Anthracinus
     include Authentication
 
     attr_accessor(*Configuration::VALID_OPTIONS_KEYS)
+    
+    attr_reader :last_request_id, :last_request_headers
 
+    def last_request_id
+      @last_request_id
+    end
+
+    def last_request_headers
+      @last_request_headers
+    end
     # Creates a new API
     def initialize(options = {})
       options = Anthracinus.options.merge(options)
