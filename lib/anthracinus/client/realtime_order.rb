@@ -72,7 +72,7 @@ module Anthracinus
         post(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_VIRTUAL_URL, params, options)
       end
 
-      def get_realtime(transaction_id, options={})
+      def get_realtime_order(transaction_id, options={})
         get(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_BULK_URL+"/#{transaction_id}", options)
       end
 
