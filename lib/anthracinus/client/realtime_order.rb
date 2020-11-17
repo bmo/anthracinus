@@ -6,7 +6,7 @@ module Anthracinus
 
     module RealtimeOrder
       # purchase_order_number up to 50 chars
-      def order_submit_realtime(client_pgm_number, client_ref_id, amount, content_provider_id, purch_order_number, return_card_and_pin = true, payment_type = :draw_down, options)
+      def order_submit_realtime(client_pgm_number, client_ref_id, amount, content_provider_id, purch_order_number, return_card_and_pin = true, payment_type = :draw_down, options={})
 
         c_r_id = client_ref_id.to_s
         pmt_type = payment_type.to_s.upcase
