@@ -33,8 +33,8 @@ module Anthracinus
     end
 
     def setup_cert
-      if client_certificate_filename && client_certificate_password
-        p12 = OpenSSL::PKCS12.new(File.read(client_certificate_filename), client_certificate_password)
+      if (client_certificate_filename || client_certificate) && client_certificate_password
+        p12 = OpenSSL::PKCS12.new(client_certificate || File.read(client_certificate_filename), client_certificate_password)
         self.client_certificate = p12.certificate
         self.client_key = p12.key
       end
