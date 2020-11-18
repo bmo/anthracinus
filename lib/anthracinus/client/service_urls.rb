@@ -9,6 +9,7 @@ module Anthracinus
       ORDER_INFO_URL = 'rewardsOrderProcessing/v1/orderInfo/byKeys'
       ORDER_BULK_URL = 'rewardsOrderProcessing/v1/submitEgiftBulk'
       ORDER_BULK_VIRTUAL_URL = 'rewardsOrderProcessing/v1/submitVirtualBulk'
+      ORDER_VIRTUAL_CODES_URL = 'rewardsOrderProcessing/v1/virtualCodeRetrievalInfo/byKeys'
     end
   end
 end

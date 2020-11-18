@@ -80,6 +80,13 @@ module Anthracinus
         get(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_VIRTUAL_URL + "/#{transaction_id}", options)
       end
 
+      def get_virtual_codes(order_number, options={})
+        params = {
+                      'orderNumber': order_number
+                  }
+        get(Anthracinus::Client::ServiceUrls::ORDER_VIRTUAL_CODES_URL, params)
+      end
+
       # retrieve the order with variable params
       def order(order_number, request_id = nil, client_pgm_number = nil)
         raise InvalidParameterError.new('Order: Order number or request_id AND client_pgm_number must be supplied') unless order_number || (request_id && client_pgm_number)
