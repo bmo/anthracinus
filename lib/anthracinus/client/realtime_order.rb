@@ -76,15 +76,22 @@ module Anthracinus
         get(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_BULK_URL+"/#{transaction_id}", options)
       end
 
-      def get_realtime_virtual(transaction_id, options={})
+      def get_realtime_virtual_order(transaction_id, options={})
         get(Anthracinus::Client::ServiceUrls::ORDER_REALTIME_VIRTUAL_URL + "/#{transaction_id}", options)
       end
 
-      def get_virtual_codes(order_number, options={})
+      def get_virtual_codes(order_number, options = {})
         params = {
-                      'orderNumber': order_number
-                  }
-        get(Anthracinus::Client::ServiceUrls::ORDER_VIRTUAL_CODES_URL, params)
+            'orderNumber': order_number
+        }
+        get(Anthracinus::Client::ServiceUrls::ORDER_VIRTUAL_CODES_URL, params, options)
+      end
+
+      def get_egift_codes(order_number, options = {})
+        params = {
+            'orderNumber': order_number
+        }
+        get(Anthracinus::Client::ServiceUrls::ORDER_EGIFT_CODES_URL, params, options)
       end
 
       # retrieve the order with variable params
