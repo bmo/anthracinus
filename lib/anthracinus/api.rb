@@ -22,6 +22,11 @@ module Anthracinus
     def last_request_headers
       @last_request_headers
     end
+
+    def last_request_status
+      @last_request_status
+    end
+
     # Creates a new API
     def initialize(options = {})
       options = Anthracinus.options.merge(options)

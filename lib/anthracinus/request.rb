@@ -63,6 +63,7 @@ module Anthracinus
       end
 
       @last_request_headers = response.headers&.dup
+      @last_request_status = response.status
 
       if options[:raw]
         response
